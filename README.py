@@ -1,4 +1,3 @@
-﻿
 import random
 import curses
 import colorama
@@ -43,6 +42,7 @@ def sozdaniye(matrix):
         for j in range(y):
             matrix[i].append(sost_2)
     matrix[0][0] = sost_1
+
 def main_proverka(x,y):
     while prov(x,y) != True:
         x = rand(l)
@@ -75,10 +75,11 @@ protivovirusnie = {
 x = 30
 y = 20
 
-sost_1 = '?' #больной
+sost_1 = '*' #больной
 sost_2 = '#' #здоровый
 sost_3 = '&' #мертвый
 sost_4 = '^' #иммунитет
+sost_5 = '?' #заражен
 smertnost = 0.07
 matrix = []
 shanz_vizdorovlinia = (1 - smertnost) * sluchainiost()
@@ -111,3 +112,4 @@ if __name__ == "__main__":
     print(kniga_zdorovia)
 
 #TODO: сделать изменение здоровья с течением времени; прописать функцию заражения; прописать функцию смертности;прописать функцию излечения; добавить изменение иммунитета с учетом приема лекарств; добавить коэфициент ума;добавить подключение к sqlite3, весы, и псевдо машинное обучение; добавить анимацию
+#TODO: переработать алгоритм  shanz_vizdorovlinia и smertnost: прописать в main_proverka рандомное значение smertnost < 0.1732241, а так же убрать привязку к функции rand и изменить цикл while: чтобы значение shanz_vizdorovlinia изменялось все так же от smertnost
