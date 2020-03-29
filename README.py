@@ -107,7 +107,7 @@ def function_of_infection():
             pass
     for people in range(0,600):
 
-        for id in book_of_id:
+        for id in range(len(list(book_of_id))):
             y = int(book_of_id[id][0])
             x = int(book_of_id[id][-1])
             another_way_how_to_be_ill(id,y,x)
