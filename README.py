@@ -173,6 +173,17 @@ book_of_id = {}  # словарь с id и координатами
 book_of_health = {}  # хранятся key = id value = health
 book_of_rationalities = {}  # хранятся key = id, value = um
 
+class people:
+    people_dictionary = {}
+    def __init__(self, condition):
+        self.condition = condition
+    def write(x):
+        for person in range(len(list(x))):
+            person = people(book_of_health[person])
+            people.people_dictionary[person] = str(person.condition)
+
+
+
 immunitet = 1
 if __name__ == "__main__":
     chance_of_infections = rand_(massive_with_numbers)
@@ -184,11 +195,12 @@ if __name__ == "__main__":
     zapolenie_knig(book_of_health)
     print_Matrix(matrix)
     print(chance_of_infections, chance_of_recoveries, mortality)
+    people.write(book_of_health)
     cls = clear_the_screen()
     # print(book_of_id, '\n', book_of_health, '\n', book_of_rationalities)
 
     # print(book_of_health)
     counter()
 
+
 # TODO: прописать функцию заражения; прописать функцию смертности;прописать функцию излечения; добавить изменение иммунитета с учетом приема лекарств; добавить коэфициент ума;добавить подключение к sqlite3, весы, и псевдо машинное обучение; добавить анимацию
-# TODO: добавить привязку к БД(sqlite3) и с помощью matplotlib  выводить график по имеющимся данным
