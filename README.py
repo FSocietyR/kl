@@ -81,51 +81,13 @@ def delta_zdorovia(X):
         except TypeError:
             pass
 
-def function_of_infection():
-
-    def checking_the_infection(person):
-        for another_id in book_of_health:
-            if another_id == person:
-                if book_of_health[person] != 'death':
-                    return(book_of_health[id]>chance_of_infections)
-                else:
-                    return(False)
-
-    def another_way_how_to_be_ill(position,y,x):
-
-        try:
-            if checking_the_infection(position) == True:
-                matrix[y][x] == cond_2
-
-            elif book_of_health[id] < 0:
-                matrix[y][x] = cond_3
-                book_of_health[id] = 'death'
-
-            elif checking_the_infection(position) == False and book_of_health[id] != 'death'  :
-                    matrix[y][x] = cond_1
-        except TypeError:
-            pass
-    for people in range(0,600):
-
-        for id in range(len(list(book_of_id))):
-            y = int(book_of_id[id][0])
-            x = int(book_of_id[id][-1])
-            another_way_how_to_be_ill(id,y,x)
-
-            try:
-                another_way_how_to_be_ill(id+1,y,x)
-
-            except:
-                pass
-    delta_zdorovia(book_of_health)
-
 def counter():
     import time
     from time import sleep
     counter = 0
     for i in range(120):
-        function_of_infection()
-
+        delta_zdorovia(book_of_health)
+        People.create_may_dictionary_for_class_people()
         cls = clear_the_screen()
         cls.__repr__()
         print('DAY {}'.format(counter))
@@ -173,6 +135,43 @@ book_of_id = {}  # словарь с id и координатами
 book_of_health = {}  # хранятся key = id value = health
 book_of_rationalities = {}  # хранятся key = id, value = um
 
+class People:
+
+
+    def __init__(self,id, condition, rationality, y_coordinate, x_coordinate):
+        self.id = id
+        self.condition = condition
+        self.x_coordinate = x_coordinate
+        self.y_coordinate = y_coordinate
+        self.rationality = rationality
+
+    def function_of_infection(self):
+        try:
+            def checking_the_infection(self):
+                if person.condition != 'dead':
+                    return(book_of_health[id]>chance_of_infections)
+                else:
+                    return (None)
+        except TypeError:
+            raise TypeError
+
+
+        def function_of_infection(self):
+            if People.checking_the_infection(self) != None:
+                if People.checking_the_infection(self) == True:
+                    matrix[self.y_coordinate][self.x_coordinate] = cond_2
+                else:
+                    matrix[self.y_coordinate][self.x_coordinate] = cond_1
+            else:
+                matrix[self.y_coordinate][self.x_coordinate] = cond_3
+
+
+    def create_may_dictionary_for_class_people():
+        for person in book_of_id:
+            person = People(person,book_of_health[person],book_of_rationalities[person], book_of_id[person][0], book_of_id[person][-1])
+            People.function_of_infection(person)
+
+
 immunitet = 1
 if __name__ == "__main__":
     chance_of_infections = rand_(massive_with_numbers)
@@ -190,5 +189,6 @@ if __name__ == "__main__":
     # print(book_of_health)
     counter()
 
+
 # TODO: прописать функцию заражения; прописать функцию смертности;прописать функцию излечения; добавить изменение иммунитета с учетом приема лекарств; добавить коэфициент ума;добавить подключение к sqlite3, весы, и псевдо машинное обучение; добавить анимацию
-# TODO: добавить привязку к БД(sqlite3) и с помощью matplotlib  выводить график по имеющимся данным
+# TODO: переписать функцию заражения; добавить её к классу как @classmethod, использовать в качестве параметров self
