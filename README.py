@@ -35,10 +35,10 @@ def zapolnenie_id(C, n, m):
 
             C += 1
             m += 1
-            if m == 30:
+            if m == 10:
                 n += 1
                 m = 0
-            if n == 20:
+            if n == 10:
                 n = 0
 
 
@@ -110,8 +110,8 @@ protivovirusnie = {
 }
 
 # variables
-x = 30  # количество людей по оси OY
-y = 20  # количество людей по оси OX
+x = 10  # количество людей по оси OY
+y = 10  # количество людей по оси OX
 n = 0  # y-координата
 m = 0  # x-координата
 C = 0  # id
@@ -165,7 +165,8 @@ class People:
         else:
             matrix[y_coordinate_of_person][x_coordinate_of_person] = cond_3
 
-
+    def immune_sistem():
+        pass
     def create_may_dictionary_for_class_people():
         for person in book_of_id:
             person = People(person,book_of_health[person],book_of_rationalities[person], int(book_of_id[person][0]), int(book_of_id[person][-1]))
@@ -191,4 +192,4 @@ if __name__ == "__main__":
 
 
 # TODO: прописать функцию заражения; прописать функцию смертности;прописать функцию излечения; добавить изменение иммунитета с учетом приема лекарств; добавить коэфициент ума;добавить подключение к sqlite3, весы, и псевдо машинное обучение; добавить анимацию
-# TODO: переписать функцию заражения; добавить её к классу как @classmethod, использовать в качестве параметров self
+# TODO: написать функцию появления имунной сиситемы: после того как человек вылечился  random.randrange(0,1) если 1: иммунитет, так же добавить в объект класса был ли он болен (1,2) 1: был, 2 : не был
