@@ -145,31 +145,31 @@ class People:
         self.y_coordinate = y_coordinate
         self.rationality = rationality
 
-    def function_of_infection(self):
+
+    def checking_the_infection(condition_of_person):
         try:
-            def checking_the_infection(self):
-                if person.condition != 'dead':
-                    return(book_of_health[id]>chance_of_infections)
-                else:
-                    return (None)
-        except TypeError:
-            raise TypeError
-
-
-        def function_of_infection(self):
-            if People.checking_the_infection(self) != None:
-                if People.checking_the_infection(self) == True:
-                    matrix[self.y_coordinate][self.x_coordinate] = cond_2
-                else:
-                    matrix[self.y_coordinate][self.x_coordinate] = cond_1
+            if condition_of_person != 'dead':
+                return(condition_of_person>chance_of_infections)
             else:
-                matrix[self.y_coordinate][self.x_coordinate] = cond_3
+                return ('YES')
+        except TypeError:
+            pass
+
+    def function_of_infection_person(condition_of_person, y_coordinate_of_person, x_coordinate_of_person):
+
+        if People.checking_the_infection(condition_of_person) != 'YES':
+            if People.checking_the_infection(condition_of_person) == True:
+                matrix[y_coordinate_of_person][x_coordinate_of_person] = cond_2
+            else:
+                matrix[y_coordinate_of_person][x_coordinate_of_person] = cond_1
+        else:
+            matrix[y_coordinate_of_person][x_coordinate_of_person] = cond_3
 
 
     def create_may_dictionary_for_class_people():
         for person in book_of_id:
-            person = People(person,book_of_health[person],book_of_rationalities[person], book_of_id[person][0], book_of_id[person][-1])
-            People.function_of_infection(person)
+            person = People(person,book_of_health[person],book_of_rationalities[person], int(book_of_id[person][0]), int(book_of_id[person][-1]))
+            People.function_of_infection_person(person.condition, person.y_coordinate, person.x_coordinate)
 
 
 immunitet = 1
