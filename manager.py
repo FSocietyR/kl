@@ -1,88 +1,188 @@
 import sqlite3 as sql
-import random
-
-# connection to db
 
 conn = sql.connect('Main_DataBase_for_Python_Models.db')
 cursor = conn.cursor()
 
-cursor.execute(""" CREATE TABLE IF NOT EXISTS viruses
-                        (name text, chance_of_beeig_ill_average float, chance_of_recovery_average float,
-                        chance_of_mortality_average float )
+sql_viruses = "SELECT * FROM viruses "
+cursor.execute(sql_viruses)
 
-""")
+viruses = {}
+for obj in cursor.fetchall():
+    viruses[obj[0]] = [obj[1], obj[2], obj[3]]
 
-
-def _Write_Into_The_DataBase_Virus(virus, chance_of_infections, chance_of_mortality_, chance_of_recoveries):
-    Information_About_Viruses = [str(virus),
-
-                                 chance_of_infections,
-
-                                 chance_of_recoveries,
-
-                                 chance_of_mortality_
-
-                                 ]
-
-    cursor.executemany("INSERT INTO viruses values(?, ?, ?, ?)", Information_About_Viruses)
-    conn.commit()
+sql_people = "SELECT * FROM people"
+cursor.execute(sql_people)
 
 
-cursor.execute(""" CREATE  TABLE IF NOT EXISTS people
-                             (id text, condition text, percent_of_health float, rationality float,
-                                   immune_system bool, chance_of_illnesses float,
-                                   chance_of_healthy float, chance_of_mortality float,
-                                   alive str)
-               """)
+class medicine:
+    medicine_anti_virus = {
+        'medicine_1': -0.1,
+        'medicine_2': 0.00,
+        'medicine_3': 0.143,
+        'medicine_4': 0.179,
+        'medicine_5': 0.23,
+        'medicine_6': -0.17,
+        'medicine_7': 0.07,
+        'medicine_8': 0.31,
+        'medicine_9': 0.1187,
+        'medicine_10': 0.024,
+    }
 
 
-def _write_into_the_DataBase(person):
+def _checking_condition():
     conn = sql.connect('Main_DataBase_for_Python_Models.db')
     cursor = conn.cursor()
 
-    passport = [str(person.id),
-                None,
-                person.condition,
-                person.rationality,
-                person.immune_system,
-                person.chance_of_illnesses,
-                person.chance_of_healthy,
-                person.chance_of_mortality,
-                str(person.alive)]
-    # person.medicine
+    sql_people = "SELECT * FROM people"
+    cursor.execute(sql_people)
 
-    cursor.executemany("INSERT INTO people values(?, ?, ?, ?, ?, ?, ?, ?, ?)", (passport,))
-    conn.commit()
-    del passport
-    return('END')
+    import main_model
+
+    medicine_anti_virus = {
+        'medicine_1': -0.1,
+        'medicine_2': 0.00,
+        'medicine_3': 0.143,
+        'medicine_4': 0.179,
+        'medicine_5': 0.23,
+        'medicine_6': -0.17,
+        'medicine_7': 0.07,
+        'medicine_8': 0.31,
+        'medicine_9': 0.1187,
+        'medicine_10': 0.024,
+    }
+
+    dictionary_with_conditions = {'cond_1': 0,
+
+                                  'cond_2': 0,
+
+                                  'cond_3': 0,
+
+                                  'cond_4': 0,
+
+                                  'cond_5': 0}
+
+    for person in cursor.fetchall():
+
+        health = person[2]
+        mort = person[7]
+        accepting = accept_medicine_(health, mort)
+        main_id = person[5]
+        r = main_model.randomise_()
+
+        if person[2] < 0.15:
+
+            if person[2] > 0.03:
 
 
-def request_from_db(id):
-    request_1 = "SELECT condition FROM people where id =?"
-    _request_1 = cursor.execute(request_1, [(str(id))])
 
-    request_2 = "SELECT percent_of_health FROM people where id = ?"
-    _request_2 = cursor.execute(request_2, [(str(id))])
+                if r > person[7]:  # check if person can beat the illnesses
 
-    request_3 = "SELECT chance_of_health FROM people where id = ?"
-    _request_3 = cursor.execute(request_3, [(str(id))])
+                    if r < main_id:
+                        rework = """
+                            UPDATE people
+                            SET condition = 'NOT_ILL_ANYMORE',
+                            immune_system = ?,
+                            percent_of_health = ?
+                            WHERE identifier = ?"""
 
-    if _request_2 > 0.5:
-        if random.random() < _request_3:
-            main_rework = """
-      UPDATE people
-      SET immune_system = int(1)
-      SET condition = 'NOT_ILL_ANYMORE'
-      WHERE id = int(id)"""
+                        data = (1, accepting, str(person))
+                        cursor.execute(rework, (data[0], data[1], data[2]))
+                    else:
 
-            cursor.execute(main_rework)
-            conn.commit()
+                        rework = """
+                            UPDATE people
+                            SET condition = 'ILL',
+                            percent_of_health = ?
+                            WHERE identifier = ? """
+                        data = (accepting, str(person))
+                        cursor.execute(rework, (data[0], data[1]))
+
+
+                else:
+
+                    rework = """
+                        UPDATE people
+                        SET condition = 'ILL',
+                        percent_of_health = ?
+                        WHERE identifier = ? """
+                    data = (accepting, str(person))
+                    cursor.execute(rework, (data[0], data[1]))
+
+            else:
+
+                rework = """
+                    UPDATE people
+                    SET condition = ?,
+                    percent_of_health = ?
+                    WHERE identifier = ?"""
+                data = ('DEAD', 0.00, str(person))
+                cursor.execute(rework, (data[0], data[1], data[2]))
+
+        else:
+
+            if person[1] == 'ILL':
+
+                if r < id[5]:
+                    rework = """
+                    UPDATE people
+                    SET condition = 'NOT_ILL_ANYMORE',
+                    immune_system = ?,
+                    percent_of_health = ?
+                    WHERE identifier = ?"""
+                    data = (1, accepting, str(person))
+                    cursor.execute(rework, (data[0], data[1], data[2]))
+
+                else:
+
+                    rework = """
+                    UPDATE people
+                    SET condition = ILL,
+                    percent_of_health = = ?
+                    WHERE identifier = ? """
+                    data = (accepting, str(person))
+                cursor.execute(rework, (data[0], data[1]))
+
+            else:
+                if person[4] == 1:
+                    rework = """
+                    UPDATE people
+                    SET condition = 'NOT_ILL_ANYMORE',
+                    immune_system = int(1),
+                    percent_of_health = ?
+                    WHERE identifier = ?"""
+                    data = (1, accepting, str(person))
+
+                    cursor.execute(rework, (data[0], data[1], data[2]))
+        conn.commit()
+        print(person)
+
+def accept_medicine_(health, mortal):
+    import main_model
+
+    return (health * 1.37 + 2 * (
+            main_model.accept_(medicine.medicine_anti_virus) * main_model.randomise_()) - (
+                    health * (1 - mortal)))
+
+
+def Print_Database():
+    conn = sql.connect('Main_DataBase_for_Python_Models.db')
+    cursor = conn.cursor()
+
+    for person in cursor.fetchall():
+        print(
+            "{id} | {condition} | {health} | {rationality} | {immune_system} | {chance_of_illnesses} | {chance_of_healthy} | {chance_of_mortality} | {medicine} " \
+                .format(id=person[0],
+                        condition=person[1],
+                        health=person[2],
+                        rationality=person[3],
+                        immune_system=person[4],
+                        chance_of_illnesses=person[5],
+                        chance_of_healthy=person[6],
+                        chance_of_mortality=person[7],
+                        medicine=person[-1]))
 
 
 conn.close()
-# TODO: добавить в новом файле *.py выгрузку значений из БД, их изменение, загрузку обратно
-# TODO: добавить в GUI.py получение значений из БД, иконки людей (на все cond_X)
-# TODO: добавить подключение к MatPlotLib и построение графика
-# TODO: сделать для каждого id свой расчет смертности
-# TODO: добавить в *.py изменение лекарств и запись их в БД
-# TODO: move request_from_db to manager
+
+if __name__ == "__main__":
+    _checking_condition()
