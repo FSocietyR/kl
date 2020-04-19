@@ -1,7 +1,5 @@
 import sqlite3 as sql
-import sqlite3 as sql
 import random
-
 
 # connection to db
 
@@ -14,44 +12,49 @@ cursor.execute(""" CREATE TABLE IF NOT EXISTS viruses
 
 """)
 
+
 def _Write_Into_The_DataBase_Virus(virus, chance_of_infections, chance_of_mortality_, chance_of_recoveries):
-    
     Information_About_Viruses = [str(virus),
 
-                                chance_of_infections,
+                                 chance_of_infections,
 
-                                chance_of_recoveries,
+                                 chance_of_recoveries,
 
-                                chance_of_mortality_
+                                 chance_of_mortality_
 
-    ]
+                                 ]
 
     cursor.executemany("INSERT INTO viruses values(?, ?, ?, ?)", Information_About_Viruses)
     conn.commit()
 
 
 cursor.execute(""" CREATE  TABLE IF NOT EXISTS people
-                             (id text, condition text, percent_of_health float, rationality float,  
+                             (id text, condition text, percent_of_health float, rationality float,
                                    immune_system bool, chance_of_illnesses float,
                                    chance_of_healthy float, chance_of_mortality float,
-                                   medicine str)
+                                   alive str)
                """)
 
 
-
 def _write_into_the_DataBase(person):
-    passport = [str(person),
-                 str(person.condition),
-                 person.percent_of_health,
-                 person.rationality,
-                 person.immune_system,
-                 person.chance_of_illnesses,
-                 person.chance_of_healthy,
-                 person.chance_of_mortality,
-                 str(person.medicine)]
-                 
-    cursor.executemany("INSERT INTO people values(?, ?, ?, ?, ?, ?)", passport)
+    conn = sql.connect('Main_DataBase_for_Python_Models.db')
+    cursor = conn.cursor()
+
+    passport = [str(person.id),
+                None,
+                person.condition,
+                person.rationality,
+                person.immune_system,
+                person.chance_of_illnesses,
+                person.chance_of_healthy,
+                person.chance_of_mortality,
+                str(person.alive)]
+    # person.medicine
+
+    cursor.executemany("INSERT INTO people values(?, ?, ?, ?, ?, ?, ?, ?, ?)", (passport,))
     conn.commit()
+    del passport
+    return('END')
 
 
 def request_from_db(id):
@@ -82,4 +85,4 @@ conn.close()
 # TODO: добавить подключение к MatPlotLib и построение графика
 # TODO: сделать для каждого id свой расчет смертности
 # TODO: добавить в *.py изменение лекарств и запись их в БД
-
+# TODO: move request_from_db to manager
