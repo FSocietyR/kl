@@ -1,4 +1,5 @@
 import random
+
 import database_connection as db
 
 prov_ = lambda x, y: x > y
@@ -96,12 +97,10 @@ class books():
                     for medicine in medicine_anti_virus.anti_virus:
                         chance_of_whatever = randomise_()
 
-
                         massive.append(chance_of_whatever)
                     return massive
 
                 for person in books.book_of_id:
-
                     books.book_of_working_medicine_percentage[person] = chance_of_working_medicine()
 
         for person in books.book_of_id:
@@ -183,12 +182,19 @@ class People:
 
     def create_main_dictionary_for_class_people():
         for person in books.book_of_id:
-            person = People(person, books.book_of_health[person], False, books.book_of_rationalities[person],
-                            True, books.book_of_infections[person],
+
+            person = People(person,
+                            books.book_of_health[person],
+                            0, books.book_of_rationalities[person],
+                            1, books.book_of_infections[person],
                             books.book_of_recoveries[person],
                             books.book_of_mortality[person],
                             int(books.book_of_id[person][0]),
-                            int(books.book_of_id[person][-1]))
+                            int(books.book_of_id[person][-1])
+                            )
+            db._write_into_the_DataBase(person)
+            # db.request_from_db(person)
+
             # People.function_of_infection_person(person, person.condition, person.alive, person.y_coordinate,
             #                                     person.x_coordinate)
 
@@ -239,14 +245,14 @@ if __name__ == "__main__":
 
     books.creation_of_book_of_chances(books.book_of_working_medicine_percentage, 'medicine')
 
-    # People.create_main_dictionary_for_class_people()
+    People.create_main_dictionary_for_class_people()
 
-    print(books.book_of_infections)
-
-    print(books.book_of_mortality)
-
-    print(books.book_of_recoveries)
-
-    print(books.book_of_working_medicine_percentage)
-
-    print(books.book_of_id)
+    # print(books.book_of_infections)
+    #
+    # print(books.book_of_mortality)
+    #
+    # print(books.book_of_recoveries)
+    #
+    # print(books.book_of_working_medicine_percentage)
+    #
+    # print(books.book_of_id)
