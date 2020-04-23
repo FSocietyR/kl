@@ -30,6 +30,7 @@ class medicine:
 
 
 def _checking_condition():
+
     conn = sql.connect('Main_DataBase_for_Python_Models.db')
     cursor = conn.cursor()
 
@@ -69,13 +70,13 @@ def _checking_condition():
         main_id = person[5]
         r = main_model.randomise_()
 
-        if person[2] < 0.15:
+        if health < 0.15:
 
-            if person[2] > 0.03:
+            if health > 0.03:
 
 
 
-                if r > person[7]:  # check if person can beat the illnesses
+                if r > mort:  # check if person can beat the illnesses
 
                     if r < main_id:
                         rework = """
@@ -85,8 +86,9 @@ def _checking_condition():
                             percent_of_health = ?
                             WHERE identifier = ?"""
 
-                        data = (1, accepting, str(person))
+                        data = (1, accepting, (person[0]))
                         cursor.execute(rework, (data[0], data[1], data[2]))
+                        conn.commit()
                     else:
 
                         rework = """
@@ -94,9 +96,9 @@ def _checking_condition():
                             SET condition = 'ILL',
                             percent_of_health = ?
                             WHERE identifier = ? """
-                        data = (accepting, str(person))
+                        data = (accepting, (person[0]))
                         cursor.execute(rework, (data[0], data[1]))
-
+                        conn.commit()
 
                 else:
 
@@ -105,8 +107,9 @@ def _checking_condition():
                         SET condition = 'ILL',
                         percent_of_health = ?
                         WHERE identifier = ? """
-                    data = (accepting, str(person))
+                    data = (accepting, (person[0]))
                     cursor.execute(rework, (data[0], data[1]))
+                    conn.commit()
 
             else:
 
@@ -115,47 +118,49 @@ def _checking_condition():
                     SET condition = ?,
                     percent_of_health = ?
                     WHERE identifier = ?"""
-                data = ('DEAD', 0.00, str(person))
+                data = ('DEAD', 0.00, (person[0]))
                 cursor.execute(rework, (data[0], data[1], data[2]))
+                conn.commit()
 
         else:
 
             if person[1] == 'ILL':
 
-                if r < id[5]:
+                if r < person[5]:
                     rework = """
                     UPDATE people
                     SET condition = 'NOT_ILL_ANYMORE',
                     immune_system = ?,
                     percent_of_health = ?
                     WHERE identifier = ?"""
-                    data = (1, accepting, str(person))
+                    data = (1, accepting, (person[0]))
                     cursor.execute(rework, (data[0], data[1], data[2]))
-
+                    conn.commit()
                 else:
 
                     rework = """
                     UPDATE people
-                    SET condition = ILL,
-                    percent_of_health = = ?
+                    SET condition = 'ILL',
+                    percent_of_health = ?
                     WHERE identifier = ? """
-                    data = (accepting, str(person))
-                cursor.execute(rework, (data[0], data[1]))
+                    data = (accepting, person[0])
+                    cursor.execute(rework, (data[0], data[1]))
+                    conn.commit()
 
             else:
                 if person[4] == 1:
                     rework = """
                     UPDATE people
                     SET condition = 'NOT_ILL_ANYMORE',
-                    immune_system = int(1),
+                    immune_system = ?,
                     percent_of_health = ?
                     WHERE identifier = ?"""
-                    data = (1, accepting, str(person))
+                    data = (1, accepting, person[0])
 
                     cursor.execute(rework, (data[0], data[1], data[2]))
-        conn.commit()
-        print(person)
-
+                    conn.commit()
+            print(person)
+    conn.close()
 def accept_medicine_(health, mortal):
     import main_model
 
@@ -185,4 +190,7 @@ def Print_Database():
 conn.close()
 
 if __name__ == "__main__":
+
     _checking_condition()
+
+
