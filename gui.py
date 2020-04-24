@@ -1,28 +1,37 @@
-import tkinter
-from tkinter import *
+import tkinter as tk
+import sqlite3 as sqlite3
+import tkinter.ttk as ttk
 
-root = Tk()
-root.geometry ('400x300')
 
-class Widjets:
-    counter_for_condtition_1 = 0
-    counter_for_condtition_2 = 0
-    counter_for_condtition_3 = 0
-    counter_for_condtition_4 = 0
-    counter_for_condtition_5 = 0
-    
-    def __init__(self, condition):    
-        
-        if condition == 'ILL'
-            counter_for_condtition_1+=1
-            
-        if condition == 'ALIVE'
-            counter_for_condtition_2+=1 
-        
-        if condition == 'DEAD:
-            counter_for_condtition_3+=1 
-    def create_circles():
-        for i in range(counter_for_condition_1):
-            pass
- 
-# TODO: сделать привязку к БД на sqlite3 со столбцом id; condition; alive; immune_system; потом выгружать эти данные на gui.py И отображать с помощью tkinter или pygame
+# $functions
+def fill_in_the_tables():
+    import manager.py
+
+    dictionary_with_conditions = {'cond_1': 0,
+
+                                  'cond_2': 0,
+
+                                  'cond_3': 0,
+
+                                  'cond_4': 0,
+
+                                  'cond_5': 0}
+
+
+    NULL_MASSSIVE = manager._getting_information_from_db()  """return massive m[0] = 'CONDTIDIONS'
+                                                                m[1] = cond_1
+                                                                m[2] = cond_2
+                                                                m[3] = cond_3
+                                                                m[4] = cond_4
+                                                                m[5] = cond_5"""
+    for i in range(1,6):
+        dictionary_with_conditions['cond_' + str(i)] = NULL_MASSSIVE[i]
+
+    del NULL_MASSSIVE
+
+root = tk.Tk()
+root.geometry('300x400')
+
+
+
+root.mainloop()
