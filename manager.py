@@ -236,30 +236,36 @@ def _getting_information_from_db(request):
 
     command = "SELECT * FROM people"
     cursor.execute(command)
+
     if request == 'condition':
-        NULL_MASSSIVE = {'name' : 'CONDITIONS',
-                         'cond_1' : 0,
-                          'cond_2' : 0,
-                           'cond_3' : 0,
-                            'cond_4' : 0,
-                             'cond_5' : 0}
+        NULL_MASSIVE = {'name' : 'CONDITIONS',
+                         'cond_1' : [[0], {}],
+                          'cond_2' : [[0], {}],
+                           'cond_3' : [[0], {}],
+                            'cond_4' : [[0], {}],
+                             'cond_5' : [[0], {}]}
 
         for person in cursor.fetchall():
-
+                # print (NULL_MASSIVE['cond_2'][0][0]+1) HOW TO WRITE CORRECTLY
+                # NULL_MASSIVE['cond_2'][1][str(person[0])] = person[3]
+                # print(NULL_MASSIVE['cond_2'])
             if person[1] == None:
-                NULL_MASSSIVE['cond_2'] = NULL_MASSSIVE['cond_2'] + 1
+                NULL_MASSIVE['cond_2'][0][0] = (NULL_MASSIVE['cond_2'][0][0] + 1)
+                NULL_MASSIVE['cond_2'][1][str(person[0])] = (person[3])
 
             if person[1] == 'ILL':
-                NULL_MASSSIVE['cond_1'] = NULL_MASSSIVE['cond_1'] + 1
+                NULL_MASSIVE['cond_1'][0][0] = NULL_MASSIVE['cond_1'][0][0] + 1
+                NULL_MASSIVE['cond_1'][1][str(person[0])] = person[3]
 
             if person[1] == 'DEAD':
-                NULL_MASSSIVE['cond_3'] = NULL_MASSSIVE['cond_3'] + 1
+                NULL_MASSIVE['cond_3'][0][0] = NULL_MASSIVE['cond_3'][0][0] + 1
+                NULL_MASSIVE['cond_3'][1][str(person[0])] = person[3]
 
             if person[1] == 'NOT_ILL_ANYMORE':
-                NULL_MASSSIVE['cond_4'] = NULL_MASSSIVE['cond_4'] + 1
+                NULL_MASSIVE['cond_4'][0][0] = NULL_MASSIVE['cond_4'][0][0] + 1
+                NULL_MASSIVE['cond_4'][1][str(person[0])] = person[3]
         conn.close()
-        return(NULL_MASSSIVE)
-        del NULL_MASSSIVE
+        return(NULL_MASSIVE)
 
     elif request == 'graph':
         NULL_DICTIONARY = {'name': 'HEALTH'}
@@ -269,9 +275,13 @@ def _getting_information_from_db(request):
 
         conn.close()
         return(NULL_DICTIONARY)
-        del NULL_DICTIONARY
+    elif request == 'rationality':
+        NULL_MASSIVE = {}
+        for person in cursor.fetchall():
+            NULL_MASSIVE[person[0]] = person[3]
+        return NULL_MASSIVE
 
-        conn.close()
+    conn.close()
 # TODO: REWORK THIS FUNCTION
 
 def finish_function():
@@ -286,14 +296,18 @@ def finish_function():
         if person[1] != 'DEAD':
             lst.append(person[1])
     if all(condition == 'NOT_ILL_ANYMORE' for condition in lst):
+        conn.close()
         return(1)
     else:
+        conn.close()
         return(0)
 
-    conn.close()
+    # deepcode ignore PythonDeadCode: It's beautiful
+
+
 
 
 if __name__ == "__main__":
-    for i in range(20):
-        _checking_condition()
+
+    _checking_condition()
 # TODO: добавить к ill: если кол-во дней < random.randrange(massive) massive = [i for i in range (0,10)], То поставить person[1] = 'incubation'
